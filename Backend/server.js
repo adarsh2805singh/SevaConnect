@@ -2,6 +2,10 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+// Import routes
+const volunteerRoutes = require('./routes/volunteerRoutes');
+const ngoRoutes = require('./routes/ngoRoutes');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -47,29 +51,9 @@ app.get('/api/test', (req, res) => {
   });
 });
 
-// Mock volunteer data endpoint
-app.get('/api/volunteers', (req, res) => {
-  res.status(200).json({
-    success: true,
-    data: [
-      { id: 1, name: 'John Doe', email: 'john@example.com', role: 'volunteer' },
-      { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'volunteer' },
-      { id: 3, name: 'Mike Johnson', email: 'mike@example.com', role: 'admin' }
-    ]
-  });
-});
-
-// Mock NGO data endpoint
-app.get('/api/ngos', (req, res) => {
-  res.status(200).json({
-    success: true,
-    data: [
-      { id: 1, name: 'Help Foundation', category: 'Education', volunteers: 45 },
-      { id: 2, name: 'Care Society', category: 'Healthcare', volunteers: 62 },
-      { id: 3, name: 'Green Earth', category: 'Environment', volunteers: 38 }
-    ]
-  });
-});
+// Use routes
+app.use('/api/volunteers', volunteerRoutes);
+app.use('/api/ngos', ngoRoutes);
 
 // 404 handler
 app.use((req, res) => {
