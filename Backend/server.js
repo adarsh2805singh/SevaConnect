@@ -9,6 +9,22 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Welcome to SevaConnect API',
+    version: '1.0.0',
+    description: 'Volunteer Management Platform Backend',
+    endpoints: {
+      health: '/health',
+      test: '/api/test',
+      volunteers: '/api/volunteers',
+      ngos: '/api/ngos'
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
