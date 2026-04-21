@@ -1,0 +1,134 @@
+/* src/pages/auth/AuthPages.css */
+.auth-page {
+  min-height: calc(100vh - 62px); /* subtract height of navbar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-bg-orb {
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(14,165,233,.15), transparent 70%);
+  border-radius: 50%;
+  top: -100px; left: -100px;
+  pointer-events: none;
+  filter: blur(60px);
+}
+.auth-bg-orb-right {
+  left: auto; right: -100px; top: auto; bottom: -100px;
+  background: radial-gradient(circle, rgba(139,92,246,.12), transparent 70%);
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2.5rem;
+}
+
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-bottom: .75rem;
+}
+.auth-back-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin-bottom: 1rem;
+}
+.auth-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Role toggle */
+.role-toggle {
+  display: flex;
+  background: var(--clr-bg-card2);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  padding: .35rem;
+  gap: .35rem;
+}
+.role-tab {
+  flex: 1;
+  padding: .65rem .75rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--clr-text-secondary);
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.role-tab:hover  { color: var(--clr-text-primary); background: var(--clr-bg-hover); }
+.role-tab.active { background: var(--clr-brand-600); color: #fff; box-shadow: var(--clr-shadow-btn); }
+
+/* Form */
+.auth-form { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.auth-link {
+  color: var(--clr-brand-500);
+  font-weight: 600;
+  transition: var(--transition);
+}
+.auth-link:hover { color: var(--clr-brand-400); text-decoration: underline; }
+
+/* Pending approval */
+.pending-card {
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+  padding: 3rem 2.5rem;
+}
+.pending-icon { font-size: 4rem; margin-bottom: -0.5rem; }
+.pending-card h2 { font-size: 1.75rem; }
+
+.pending-steps {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+.pending-step {
+  padding: .85rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--clr-bg-card2);
+  font-size: .875rem;
+  font-weight: 500;
+  color: var(--clr-text-muted);
+  text-align: left;
+  border: 1px solid var(--clr-border);
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.pending-step.done   { color: var(--clr-urgent-low-text); border-color: var(--clr-urgent-low-brd); background: var(--clr-urgent-low-bg); }
+.pending-step.active { color: var(--clr-urgent-med-text); border-color: var(--clr-urgent-med-brd); background: var(--clr-urgent-med-bg); }
+
+@media (max-width: 520px) {
+  .auth-card { padding: 1.5rem; }
+  .pending-card { padding: 2rem 1.5rem; }
+}

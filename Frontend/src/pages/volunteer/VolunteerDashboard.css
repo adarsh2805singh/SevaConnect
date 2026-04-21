@@ -1,0 +1,92 @@
+/* src/pages/volunteer/VolunteerDashboard.css */
+.volunteer-profile-chip {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  background: var(--clr-bg-card);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-full);
+  padding: .5rem 1.25rem .5rem .5rem;
+  box-shadow: var(--clr-shadow-card);
+}
+
+/* Tabs */
+.vol-tabs {
+  display: flex;
+  gap: .25rem;
+  background: var(--clr-bg-card2);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  padding: .35rem;
+  align-self: flex-start;
+}
+.vol-tab {
+  padding: .65rem 1.4rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--clr-text-secondary);
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.vol-tab:hover { color: var(--clr-text-primary); background: var(--clr-bg-hover); }
+.vol-tab.active { background: var(--clr-brand-600); color: #fff; box-shadow: var(--clr-shadow-btn); }
+
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.2);
+  border-radius: 999px;
+  font-size: .7rem;
+  font-weight: 800;
+  min-width: 22px; height: 22px;
+  padding: 0 .4rem;
+}
+[data-theme="light"] .vol-tab:not(.active) .tab-count { background: rgba(0,0,0,.08); color: var(--clr-text-primary); }
+
+/* Search & Filter */
+.search-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 280px;
+}
+
+.urgency-filters {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.urgency-filter-btn {
+  padding: .5rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: .8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--clr-border-2);
+  background: var(--clr-bg-card);
+  color: var(--clr-text-secondary);
+  transition: var(--transition);
+  display: flex; align-items: center; gap: 0.35rem;
+}
+.urgency-filter-btn:hover { border-color: var(--clr-brand-500); color: var(--clr-text-primary); background: var(--clr-bg-hover); }
+.urgency-filter-btn.active { color: #fff; border-color: transparent; }
+.urgency-filter-btn.active.badge-high { background: var(--clr-urgent-high-text); }
+.urgency-filter-btn.active.badge-medium { background: var(--clr-urgent-med-text); }
+.urgency-filter-btn.active.badge-low { background: var(--clr-urgent-low-text); }
+
+@media (max-width: 768px) {
+  .search-input-wrap { min-width: 100%; }
+}
