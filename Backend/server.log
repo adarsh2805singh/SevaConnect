@@ -1,5 +1,9 @@
 ✅ Server is running on http://localhost:3001
 📝 Health check: http://localhost:3001/health
 🧪 Test endpoint: http://localhost:3001/api/test
-👥 Volunteers: http://localhost:3001/api/volunteers
+� Auth: http://localhost:3001/api/auth
+�👥 Volunteers: http://localhost:3001/api/volunteers
 🏢 NGOs: http://localhost:3001/api/ngos
+✅ MongoDB connected successfully
+📊 Database: sevaconnect
+🔗 Host: localhost

@@ -2,12 +2,19 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+// Import database connection
+const connectDB = require('./config/database');
+
 // Import routes
+const authRoutes = require('./routes/authRoutes');
 const volunteerRoutes = require('./routes/volunteerRoutes');
 const ngoRoutes = require('./routes/ngoRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Connect to MongoDB
+connectDB();
 
 // Middleware
 app.use(cors());
@@ -52,6 +59,7 @@ app.get('/api/test', (req, res) => {
 });
 
 // Use routes
+app.use('/api/auth', authRoutes);
 app.use('/api/volunteers', volunteerRoutes);
 app.use('/api/ngos', ngoRoutes);
 
@@ -79,7 +87,8 @@ app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
   console.log(`📝 Health check: http://localhost:${PORT}/health`);
   console.log(`🧪 Test endpoint: http://localhost:${PORT}/api/test`);
-  console.log(`👥 Volunteers: http://localhost:${PORT}/api/volunteers`);
+  console.log(`� Auth: http://localhost:${PORT}/api/auth`);
+  console.log(`�👥 Volunteers: http://localhost:${PORT}/api/volunteers`);
   console.log(`🏢 NGOs: http://localhost:${PORT}/api/ngos`);
 });
 

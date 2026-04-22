@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
+import { authService } from '../../services/api';
 import './AuthPages.css';
 
 export default function RegisterPage() {
@@ -28,12 +29,45 @@ export default function RegisterPage() {
       return;
     }
     setLoading(true);
-    if (role === 'ngo') {
-      await registerNGO({ name: form.name, email: form.email, code: form.ngoCode, sector: form.sector });
-      setStep('pending');
-    } else {
-      await login('volunteer', { email: form.email });
-      navigate('/volunteer/dashboard');
+    try {
+      if (role === 'ngo') {
+        // NGO Registration
+        const response = await authService.registerNGO({
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          phone: form.phone,
+          organizationName: form.ngoCode,
+          organizationDescription: form.sector
+        });
+        
+        if (response?.data?.success) {
+          const { token, user: userData } = response.data;
+          authService.saveLoginData(token, 'ngo', userData);
+          notify('success', 'NGO registered! Awaiting admin approval...');
+          setStep('pending');
+        }
+      } else {
+        // Volunteer Registration
+        const response = await authService.registerVolunteer({
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          phone: form.phone,
+          skills: form.skills ? form.skills.split(',').map(s => s.trim()) : [],
+          availability: form.location || 'flexible'
+        });
+
+        if (response?.data?.success) {
+          const { token, user: userData } = response.data;
+          authService.saveLoginData(token, 'volunteer', userData);
+          notify('success', 'Registration successful! Redirecting...');
+          setTimeout(() => navigate('/volunteer/dashboard'), 1000);
+        }
+      }
+    } catch (error) {
+      const message = error.response?.data?.message || 'Registration failed. Please try again.';
+      notify('error', message);
     }
     setLoading(false);
   };

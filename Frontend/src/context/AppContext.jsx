@@ -1,6 +1,7 @@
 // src/context/AppContext.jsx
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { mockNGOs, mockTasks, mockVolunteer, mockNGOUser } from '../data/mockData';
+import { authService } from '../services/api';
 
 const AppContext = createContext(null);
 
@@ -24,6 +25,21 @@ export function AppProvider({ children }) {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  // Load user from localStorage on app startup
+  useEffect(() => {
+    const savedToken = localStorage.getItem('auth_token');
+    const savedUserData = localStorage.getItem('user_data');
+    const savedRole = localStorage.getItem('user_role');
+    if (savedToken && savedUserData && savedRole) {
+      try {
+        const userData = JSON.parse(savedUserData);
+        setUser({ role: savedRole, ...userData });
+      } catch (e) {
+        console.error('Failed to restore user session:', e);
+      }
+    }
+  }, []);
+
   const toggleTheme = useCallback(() => {
     setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
   }, []);
@@ -38,19 +54,38 @@ export function AppProvider({ children }) {
   /* ─── AUTH ──────────────────────────────────────────────── */
   const login = useCallback((role, credentials) => {
     setLoading(true);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (role === 'volunteer') setUser({ role: 'volunteer', ...mockVolunteer });
-        else if (role === 'ngo')  setUser({ role: 'ngo', ...mockNGOUser });
-        else if (role === 'admin') setUser({ role: 'admin', id: 999, name: 'Admin', email: credentials?.email || 'admin@example.com' });
+    return new Promise(async (resolve) => {
+      try {
+        let response;
+        if (role === 'volunteer') {
+          response = await authService.loginVolunteer(credentials);
+        } else if (role === 'ngo') {
+          response = await authService.loginNGO(credentials);
+        } else if (role === 'admin') {
+          response = await authService.loginAdmin(credentials);
+        }
+
+        if (response?.data?.success) {
+          const { token, user: userData } = response.data;
+          // Save to localStorage
+          authService.saveLoginData(token, role, userData);
+          // Set user state
+          setUser({ role, ...userData });
+          setLoading(false);
+          notify('success', `Welcome! Signed in as ${role}`);
+          resolve(true);
+        }
+      } catch (error) {
         setLoading(false);
-        notify('success', `Welcome back! Signed in as ${role}.`);
-        resolve(true);
-      }, 900);
+        const message = error.response?.data?.message || 'Login failed. Please check your credentials.';
+        notify('error', message);
+        resolve(false);
+      }
     });
   }, [notify]);
 
   const logout = useCallback(() => {
+    authService.logout(); // Clear localStorage
     setUser(null);
     notify('info', 'You have been signed out.');
   }, [notify]);

@@ -1,9 +1,9 @@
 // src/services/api.js
-// API integration placeholders — replace base URL and add auth headers when backend is ready
+// API integration with MongoDB backend
 
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.ngo-volunteer.example.com/v1';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -24,10 +24,18 @@ export const authService = {
   loginVolunteer: (data) => apiClient.post('/auth/volunteer/login', data),
   registerNGO: (data) => apiClient.post('/auth/ngo/register', data),
   registerVolunteer: (data) => apiClient.post('/auth/volunteer/register', data),
+  loginAdmin: (data) => apiClient.post('/auth/admin/login', data),
   logout: () => {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user_role');
+    localStorage.removeItem('user_data');
   },
+  // Helper function to save login credentials
+  saveLoginData: (token, role, userData) => {
+    localStorage.setItem('auth_token', token);
+    localStorage.setItem('user_role', role);
+    localStorage.setItem('user_data', JSON.stringify(userData));
+  }
 };
 
 // ─── TASKS ─────────────────────────────────────────────────────
