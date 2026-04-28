@@ -55,7 +55,8 @@ export default function RegisterPage() {
           password: form.password,
           phone: form.phone,
           skills: form.skills ? form.skills.split(',').map(s => s.trim()) : [],
-          availability: form.location || 'flexible'
+          city: form.location || '',
+          availability: 'flexible'
         });
 
         if (response?.data?.success) {
@@ -186,16 +187,22 @@ export default function RegisterPage() {
             )}
 
             {role === 'volunteer' && (
-              <div className="form-grid-2">
+              <>
                 <div className="form-group">
-                  <label className="form-label">Location / City</label>
-                  <input id="reg-location" className="form-input" type="text" placeholder="Mumbai" value={form.location} onChange={set('location')} />
+                  <label className="form-label">Phone Number</label>
+                  <input id="reg-phone" className="form-input" type="tel" placeholder="+91 98765 43210" required value={form.phone} onChange={set('phone')} />
                 </div>
-                <div className="form-group">
-                  <label className="form-label">Skills (comma-separated)</label>
-                  <input id="reg-skills" className="form-input" type="text" placeholder="Teaching, First Aid" value={form.skills} onChange={set('skills')} />
+                <div className="form-grid-2">
+                  <div className="form-group">
+                    <label className="form-label">Location / City</label>
+                    <input id="reg-location" className="form-input" type="text" placeholder="Mumbai" value={form.location} onChange={set('location')} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Skills (comma-separated)</label>
+                    <input id="reg-skills" className="form-input" type="text" placeholder="Teaching, First Aid" value={form.skills} onChange={set('skills')} />
+                  </div>
                 </div>
-              </div>
+              </>
             )}
 
             <div className="form-grid-2">

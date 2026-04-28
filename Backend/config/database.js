@@ -3,8 +3,13 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    // Use local MongoDB or MongoDB Atlas connection string
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/sevaconnect';
+    // Use MongoDB Atlas connection string from environment variables
+    const mongoURI = process.env.MONGODB_URI;
+
+    if (!mongoURI) {
+      console.error('❌ Missing MONGODB_URI in environment variables.');
+      process.exit(1);
+    }
 
     await mongoose.connect(mongoURI);
 
